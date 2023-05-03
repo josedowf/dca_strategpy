@@ -2,6 +2,7 @@ import json
 import datetime as dt
 import requests
 import pandas as pd
+import csv
 
 
 # read credentials from creds.json file
@@ -14,6 +15,14 @@ def read_creds(filename):
     return creds
 
 
+def open_csv_file(filename):
+    with open(filename, 'r') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        for row in csv_reader:
+            # Do something with the row
+            print(row)
+
+
 def today_formatted():
     date = dt.datetime.today()
     formatted_date = date.strftime('%Y-%m-%d')
@@ -23,6 +32,10 @@ def today_formatted():
 def stock_data_request(ticker, start_date, end_date):
     with open('creds.json', 'r') as f:
         creds = json.load(f)
+
+    # Ensure ticker is all caps.
+    # API won't be able to retrieve the data if this condition is not met.
+    ticker = ticker.upper()
 
     # Set the API key
     api_key = creds['api_key']
@@ -69,11 +82,12 @@ def stock_data_request(ticker, start_date, end_date):
             'n': 'Transactions'
         })
 
+        print('Accessed API and retrieved stock data correctly.')
+        print()
         return df
 
 
 def dca_strategy(stock_data, periodicity, dc_amount):
-
     # Validate periodicity
     allowed_periods = ['W', 'M', 'Q', '2Q', 'A']
     if periodicity not in allowed_periods:
@@ -94,8 +108,10 @@ def dca_strategy(stock_data, periodicity, dc_amount):
 
     total_investment = stock_data['timestamp'].count() * dc_amount
     final_investment_value = round(total_stock * current_close_price, 2)
-    percentage_change = '{:.2%}'.format(final_investment_value / total_investment - 1)
 
-    return stock_data, total_investment, final_investment_value, percentage_change, total_stock
+    print(f'The DCA strategy was ran for {stock_data["ticker"][0]} '
+          f'investing {dc_amount} dollars on a {periodicity} basis')
+
+    return stock_data, total_investment, final_investment_value, total_stock
 
 

@@ -31,6 +31,9 @@ with open('creds.json', 'r') as f:
 # connects and loads the provided data to its corresponding sql db
 def load_stock_data_to_sql(ticker, ticker_info_list, last_id, creds: str = r'' + cred['main_path']
                                                                            + 'stock_market/creds.json'):
+    # Ensure ticker is all caps to standardize names in database
+    ticker = ticker.upper()
+
     # authenticate and assign credentials to SQL to execute query.
     creds = read_creds(creds)
     db_host, db_name, port_id = creds['db_host'], creds['db_name'], creds['port_id']
@@ -87,7 +90,7 @@ def load_stock_data_to_sql(ticker, ticker_info_list, last_id, creds: str = r'' +
 
         if len(rows_to_insert) > 0:
             print(f'{len(rows_to_insert)} new rows of data to be loaded to SQL.')
-
+            print()
             # Insert query that ensures that all information loaded to SQL is not repeated
             insert_script = f'''INSERT INTO {ticker}_stock_data (id, ticker, adjusted, volume, wap_volume, open_price, 
                                        close_price, high_price, low_price, timestamp, transactions) 
@@ -99,8 +102,10 @@ def load_stock_data_to_sql(ticker, ticker_info_list, last_id, creds: str = r'' +
             conn.commit()
             print('Successful SQL posting')
             print(f'Loaded {ticker}_stock_data table with information')
+            print()
         else:
             print('Information up to date. No data to load.')
+            print()
     except Exception as error:
         print('Failed to connect to SQL database')
         print(error)
@@ -184,7 +189,8 @@ def extract_stock_data_to_date(ticker, start_date, creds: str = r'' + cred['main
         headers = [desc[0] for desc in cur.description]
 
         stock_data = pd.DataFrame(rows, columns=headers)
-
+        print('Extracted stock data from SQL database.')
+        print()
         return stock_data
     except Exception as error:
         print("Failed to retrieve last id from dataset")
