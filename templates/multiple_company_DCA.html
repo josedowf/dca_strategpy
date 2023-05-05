@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Data</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Stock Data</h1>
+    </header>
+    <main>
+        <h2>Multiple Company DCA Strategy</h2>
+        <form action="/multiple_company_DCA" method="POST">
+            <div class="form-group">
+                <label for="ticker_submit">Enter a Ticker:</label>
+                <input type="text" name="input-container" id="ticker_submit">
+                <button type="submit" name="ticker_submit" value="submit">Add Ticker</button>
+            </div>
+            <ul class="ticker-list">
+            {% for ticker in tickers %}
+                <li>{{ ticker }}</li>
+            {% endfor %}
+            </ul>
+             <div class="form-group">
+                <label for="start_range">Start Range:</label>
+                <input type="date" id="start_range" name="start_range" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dca_periodicity">DCA Periodicity:</label>
+                <select id="dca_periodicity" name="dca_periodicity" required>
+                    <option value="W">Weekly</option>
+                    <option value="M">Monthly</option>
+                    <option value="Q">Quarterly</option>
+                    <option value="2Q">Bi-Annually</option>
+                    <option value="A">Annually</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="dc_amount">DC Amount:</label>
+                <input type="number" id="dc_amount" name="dc_amount" min="1" max="1000" value="75" required>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </main>
+</body>
+</html>

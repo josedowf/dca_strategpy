@@ -5,7 +5,7 @@ from utils import stock_data_request, dca_strategy, today_formatted
 import time
 
 companies_list = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'TSLA', 'NVDA', 'JPM', 'JNJ', 'V', 'KO', 'PG', 'WMT', 'HD',
-                           'MA', 'DIS', 'PYPL', 'BAC', 'NFLX', 'VZ', 'CMCSA', 'SPY']
+                  'MA', 'DIS', 'PYPL', 'BAC', 'NFLX', 'VZ', 'CMCSA', 'SPY']
 
 defaults = {
     'start_range': '2013-01-01',
@@ -40,6 +40,8 @@ def dca_script(start_range, dca_periodicity, dc_amount, today, ticker):
 def dca_script_multiple_companies(start_range, dca_periodicity, dc_amount, today, companies):
     # Load all stock data from polygon to a SQL database in each corresponding table
     for ticker in companies:
+        # Ensure ticker is all caps to standardize names in directory
+        ticker = ticker.upper()
         stock_data = stock_data_request(ticker, start_range, today)
         if ticker == 1:
             print('Accessed API and retrieved stock data correctly.')
@@ -70,3 +72,7 @@ def dca_script_multiple_companies(start_range, dca_periodicity, dc_amount, today
     combined_csv.to_csv(f'combined_dca_strategy_info_{today}.csv', index=False)
     return combined_csv
 
+
+# tod = today_formatted()
+
+# dca_script_multiple_companies('2021-01-01', 'M', 750, tod, companies_list)
