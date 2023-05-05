@@ -1,14 +1,14 @@
-DCA Strategy Runner
+# DCA Strategy Runner
 This is a Python program that utilizes Polygon's API to extract real-time stock data, stores it in a PostgreSQL database, and runs a dollar-costing average investment strategy scenario based on user-defined parameters.
 
-Features:
+# Features:
 Extracts real-time stock data from Polygon's API.
 Stores data in a PostgreSQL database.
 Runs a dollar-costing average investment strategy based on user-defined parameters.
 Flask-based HTML interface for user input.
 Dependencies
 
-This program requires the following dependencies:
+# This program requires the following dependencies:
 - Python 3.6 or higher
 - HTML5
 - CSS
@@ -17,7 +17,7 @@ This program requires the following dependencies:
 - SQLAlchemy
 - Polygon API key
 
-Installation and Usage:
+# Installation and Usage:
 - Clone the repository to your local machine.
 - Install the dependencies using pip: pip install -r requirements.txt
 - Create a PostgreSQL database and update the database connection details in creds.json.
